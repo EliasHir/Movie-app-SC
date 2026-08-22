@@ -1,0 +1,7 @@
+rules:
+  - id: movie-app-hardcoded-tmdb-api-key
+    languages:
+      - javascript
+    message: "Do not hardcode the TMDB API key in source code."
+    severity: ERROR
+    pattern-regex: "api_key=[A-Za-z0-9]+"

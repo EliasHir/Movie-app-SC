@@ -1,0 +1,7 @@
+rules:
+  - id: movie-app-cdn-link-no-sri
+    languages:
+      - generic
+    message: "External CDN stylesheet should use Subresource Integrity."
+    severity: WARNING
+    pattern-regex: '<link(?![^>]*integrity=)[^>]*href="https://[^"]+"[^>]*rel="stylesheet"[^>]*>'
