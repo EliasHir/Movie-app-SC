@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import accountRouter from './routes/AccountRouter.js';
@@ -5,6 +6,7 @@ import favouritesRouter from './routes/FavouritesRouter.js';
 import groupRouter from './routes/GroupRouter.js';
 import reviewRouter from './routes/ReviewRouter.js';
 import showtimeRouter from './routes/ShowtimeRouter.js';
+import movieRouter from './routes/MovieRouter.js';
 
 const port = 3001;
 
@@ -16,6 +18,8 @@ app.use(express.urlencoded({extended: false}));
 app.use('/account',accountRouter);
 
 app.use('/review',reviewRouter);
+
+app.use('/movies', movieRouter);
 
 //groups
 app.use('/groups', groupRouter);
