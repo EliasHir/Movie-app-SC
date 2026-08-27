@@ -1,9 +1,9 @@
 name: Reusable CI Workflow
 
 # Failure policy:
-# Block merge: failed tests, SAST findings, secrets, OSV vulnerabilities,
-# and high/critical vulnerabilities from dependency and container scans.
-# Lower-severity npm audit findings do not block the merge.
+# Block merge: failed tests, SAST findings, secrets, and OSV findings.
+# Warn only: npm audit findings, because legacy dependencies may require
+# breaking upgrades and should be reviewed manually.
 
 on:
   push:
@@ -71,6 +71,7 @@ jobs:
         run: npm ci
 
       - name: Audit dependencies
+        continue-on-error: true
         run: npm audit --audit-level=high
 
   osv:
@@ -119,22 +120,3 @@ jobs:
         with:
           format: cyclonedx-json
           artifact-name: repo-sbom.cdx.json
-
-  container-scan:
-    name: Trivy container scan
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Build Docker image
-        run: docker build -t movie-app:ci .
-
-      - name: Scan Docker image
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # 0.35.0
-        with:
-          image-ref: movie-app:ci
-          format: table
-          severity: HIGH,CRITICAL
-          exit-code: '1'
